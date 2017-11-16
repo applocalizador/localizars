@@ -15,6 +15,7 @@ public class Usuario {
     private String clave;
     private String claveConfirmacion;
     private Date fechaNacimiento;
+    private boolean success = false;
 
     public Usuario() {
     }
@@ -111,5 +112,19 @@ public class Usuario {
      */
     public void setFechaNacimiento(Date fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
+    }
+
+    /**
+     * @return the success
+     */
+    public boolean isSuccess() {
+        return success;
+    }
+
+    /**
+     * @param success the success to set
+     */
+    public void setSuccess(boolean success) {
+        this.success = success;
     }
 }

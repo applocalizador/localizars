@@ -15,7 +15,7 @@ public class GestorPropiedades {
     public Properties cargarPropiedades() throws Exception {
         Properties p = new Properties();
         try {
-//            p.setProperty("urlbd", "jdbc:postgresql://127.0.0.1:5432/localizador");
+            p.setProperty("urlbd", "jdbc:postgresql://127.0.0.1:5432/localizador");
 //            p.setProperty("urlbd", "jdbc:postgresql://54dc96645973ca7c56000153-oxes.rhcloud.com:51801/cuponrs");
             p.setProperty("controlador", "org.postgresql.Driver");
             p.setProperty("usuario", "adminvqltilx");

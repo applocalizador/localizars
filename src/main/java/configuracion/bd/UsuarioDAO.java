@@ -35,6 +35,7 @@ public class UsuarioDAO {
                 usuario.setCorreo(rs.getString("correo"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido(rs.getString("apellido"));
+                usuario.setSuccess(Boolean.TRUE);
             } else {
                 usuario.setCodigo(null);
             }
@@ -57,7 +58,7 @@ public class UsuarioDAO {
             consulta = new Consulta(this.conexion);
             StringBuilder sql = new StringBuilder(
                     "SELECT COUNT(1)>0 AS existe"
-                    + " FROM usuario"
+                    + " FROM usuarios"
                     + " WHERE correo='" + usuario.getCorreo().trim() + "'"
             );
             rs = consulta.ejecutar(sql);
@@ -101,17 +102,18 @@ public class UsuarioDAO {
         try {
             consulta = new Consulta(this.conexion);
             StringBuilder sql = new StringBuilder(
-                    "SELECT cod_usuario, correo, clave, nombre, apellido, fecha_nacimiento"
-                    + " FROM usuario"
+                    "SELECT correo, cod_documento, documento_usuario, nombre, apellido, clave, activo, fecha_registro"
+                    + " FROM usuarios"
                     + " WHERE correo='" + usuario.getCorreo().trim() + "' AND clave=md5('" + usuario.getClave().trim() + "')"
             );
             rs = consulta.ejecutar(sql);
             if (rs.next()) {
-                usuario.setCodigo(rs.getString("cod_usuario"));
+                usuario.setCodigo(rs.getString("documento_usuario"));
                 usuario.setCorreo(rs.getString("correo"));
                 usuario.setClave(rs.getString("clave"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido(rs.getString("apellido"));
+                usuario.setSuccess(Boolean.TRUE);
             }
             return usuario;
         } finally {
