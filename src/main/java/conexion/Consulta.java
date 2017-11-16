@@ -11,7 +11,7 @@ import java.sql.Statement;
 
 /**
  *
- * @author carlosp
+ * @author waltero
  */
 public class Consulta {
 
