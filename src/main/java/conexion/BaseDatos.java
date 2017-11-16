@@ -10,7 +10,7 @@ import utilidades.modelo.UtilLog;
 
 /**
  *
- * @author carlosf
+ * @author waltero
  */
 public class BaseDatos {
 
