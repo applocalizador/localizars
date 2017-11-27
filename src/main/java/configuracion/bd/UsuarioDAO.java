@@ -59,7 +59,7 @@ public class UsuarioDAO {
             StringBuilder sql = new StringBuilder(
                     "SELECT COUNT(1)>0 AS existe"
                     + " FROM usuarios"
-                    + " WHERE correo='" + usuario.getCorreo().trim() + "'"
+                    + " WHERE correo='" + usuario.getCorreo().toLowerCase().trim() + "' OR TRIM(REGEXP_REPLACE(correo, '@.*', '', 'g'))::varchar='" + usuario.getCorreo().toLowerCase().trim() + "')"
             );
             rs = consulta.ejecutar(sql);
             rs.next();
@@ -104,7 +104,8 @@ public class UsuarioDAO {
             StringBuilder sql = new StringBuilder(
                     "SELECT correo, cod_documento, documento_usuario, nombre, apellido, clave, activo, fecha_registro"
                     + " FROM usuarios"
-                    + " WHERE correo='" + usuario.getCorreo().trim() + "' AND clave=md5('" + usuario.getClave().trim() + "')"
+                    + " WHERE (correo='" + usuario.getCorreo().toLowerCase().trim() + "' OR TRIM(REGEXP_REPLACE(correo, '@.*', '', 'g'))::varchar='" + usuario.getCorreo().toLowerCase().trim() + "')"
+                    + " AND clave=md5('" + usuario.getClave().trim() + "')"
             );
             rs = consulta.ejecutar(sql);
             if (rs.next()) {
@@ -159,7 +160,7 @@ public class UsuarioDAO {
                     + " WHERE email='" + usuario.getCorreo() + "'"
             );
             rs = consulta.ejecutar(sql);
-            if(rs.next()){
+            if (rs.next()) {
                 usuario.setCodigo(rs.getString("cod_usuario"));
             } else {
                 throw new SQLException("Ingresa para obtener nuevos cupones", UtilLog.TW_VALIDACION);
