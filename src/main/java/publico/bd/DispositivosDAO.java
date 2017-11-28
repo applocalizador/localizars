@@ -39,14 +39,14 @@ public class DispositivosDAO {
                     "WITH tmp_localizaciones AS ("
                     + " SELECT correo, cod_dispositivo, MAX(cod_localizacion) AS cod_localizacion, MAX(fecha) AS fecha"
                     + " FROM public.localizaciones_dispositivo"
-                    + " WHERE correo='jaspart@gmail.com' AND fecha>=current_Date-90"
+                    + " WHERE correo='" + correo + "' AND fecha>=current_Date-90"
                     + " GROUP BY correo,cod_dispositivo"
                     + " )"
                     + " SELECT D.correo, D.cod_dispositivo, D.identificador, D.fecha, LD.cod_localizacion, LD.fecha, LD.latitude, LD.longitud"
                     + " FROM public.dispositivos D"
                     + " LEFT JOIN tmp_localizaciones TL ON (TL.correo=D.correo AND TL.cod_dispositivo=D.cod_dispositivo)"
                     + " LEFT JOIN public.localizaciones_dispositivo LD ON (LD.correo=TL.correo AND LD.cod_dispositivo=TL.cod_dispositivo AND LD.cod_localizacion=TL.cod_localizacion)"
-                    + " WHERE D.correo='jaspart@gmail.com'"
+                    + " WHERE D.correo='" + correo + "'"
             );
             rs = consulta.ejecutar(sql);
             while (rs.next()) {
