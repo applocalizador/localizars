@@ -65,8 +65,11 @@ public class GestorUsuario extends Gestor {
     }
 
     public void validarAtributosIngreso(Usuario usuario) throws Exception {
-        if (!UtilCorreo.validarCorreo(usuario.getCorreo())) {
-            throw new Exception("Ingresa un correo correcto.", UtilLog.TW_VALIDACION);
+//        if (!UtilCorreo.validarCorreo(usuario.getCorreo())) {
+//            throw new Exception("Ingresa un correo correcto.", UtilLog.TW_VALIDACION);
+//        }
+        if (usuario == null || usuario.getCorreo() == null || usuario.getCorreo().equalsIgnoreCase("")) {
+            throw new Exception("Ingresa un correo o usuario correcto.", UtilLog.TW_VALIDACION);
         }
         if (usuario.getClave() == null || usuario.getClave().equalsIgnoreCase("")) {
             throw new Exception("Ingresa tu clave.", UtilLog.TW_VALIDACION);

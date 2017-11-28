@@ -59,7 +59,7 @@ public class UsuarioDAO {
             StringBuilder sql = new StringBuilder(
                     "SELECT COUNT(1)>0 AS existe"
                     + " FROM usuarios"
-                    + " WHERE correo='" + usuario.getCorreo().toLowerCase().trim() + "' OR TRIM(REGEXP_REPLACE(correo, '@.*', '', 'g'))::varchar='" + usuario.getCorreo().toLowerCase().trim() + "')"
+                    + " WHERE correo='" + usuario.getCorreo().toLowerCase().trim() + "' OR TRIM(REGEXP_REPLACE(correo, '@.*', '', 'g'))::varchar='" + usuario.getCorreo().toLowerCase().trim() + "'"
             );
             rs = consulta.ejecutar(sql);
             rs.next();
