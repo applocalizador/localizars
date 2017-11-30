@@ -20,7 +20,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
 import publico.controlador.GestorDispositivos;
+import publico.controlador.GestorGrupos;
 import publico.modelo.Dispositivos;
+import publico.modelo.Grupos;
 import utilidades.modelo.UtilLog;
 import utilidades.modelo.UtilRest;
 
@@ -92,6 +94,35 @@ public class LocalizadorResource {
         }
         return null;
     }
+    
+    
+    /**
+     * Devuelve la lista de grupos del usuario
+     *
+     * @param correo
+     * @return
+     * @throws java.io.IOException
+     */
+    @GET
+    @Path("/get/grupos/usuario/{correo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getGrupos(@PathParam("correo") String correo) throws IOException {
+        try {
+            JSONArray grupos = new JSONArray();
+            GestorGrupos gestorGrupos = new GestorGrupos();
+            
+            List<Grupos> gruposList = gestorGrupos.consultaGrupos(correo);
+            for (Grupos g : gruposList) {
+                grupos.put(UtilRest.toJson(g));
+            }
+            return grupos.toString();
+        } catch (Exception ex) {
+            UtilLog.generarLog(this.getClass(), ex);
+        }
+        return null;
+    }
+    
+    
 
     /**
      * PUT method for updating or creating an instance of LocalizadorResource
