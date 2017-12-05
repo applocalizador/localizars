@@ -44,6 +44,7 @@ public class GrupoDAO {
             rs = consulta.ejecutar(sql);
             while (rs.next()) {
                 Grupos grupo = new Grupos(new GruposPK(rs.getString("correo"), rs.getInt("cod_grupo")));
+                grupo.setNombre(rs.getString("nombre"));
                 listaGrupos.add(grupo);
             }
             return listaGrupos;
