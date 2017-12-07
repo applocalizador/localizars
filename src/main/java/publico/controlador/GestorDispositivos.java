@@ -37,4 +37,20 @@ public class GestorDispositivos extends Gestor {
         }
     }
 
+    public List<Dispositivos> cargarDispositivosGrupoUsuario(String correo, int codGrupo) throws Exception {
+        try {
+            List<Dispositivos> dispositivosList = new ArrayList<>();
+            this.abrirConexion();
+
+            DispositivosDAO dispositivosDAO = new DispositivosDAO(conexion);
+            dispositivosList.addAll(dispositivosDAO.cargarDispositivosGrupoUsuario(correo, codGrupo));
+            for (Dispositivos d : dispositivosList) {
+                d.setLocalizacionesDispositivoCollection(dispositivosDAO.cargarLocalizacionesDispositivo(d.getDispositivosPK().getCorreo(), d.getDispositivosPK().getCodDispositivo()));
+            }
+            return dispositivosList;
+        } finally {
+            this.cerrarConexion();
+        }
+    }
+
 }
