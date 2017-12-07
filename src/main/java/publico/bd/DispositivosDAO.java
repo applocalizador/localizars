@@ -94,4 +94,42 @@ public class DispositivosDAO {
         }
     }
 
+    public Collection<? extends Dispositivos> cargarDispositivosGrupoUsuario(String correo, int codGrupo) throws SQLException {
+        ResultSet rs = null;
+        Consulta consulta = null;
+        try {
+            Collection<Dispositivos> dispositivoses = new ArrayList<>();
+            consulta = new Consulta(this.conexion);
+            StringBuilder sql = new StringBuilder(
+                    "WITH tmp_localizaciones AS ("
+                    + " SELECT correo, cod_dispositivo, MAX(cod_localizacion) AS cod_localizacion, MAX(fecha) AS fecha"
+                    + " FROM public.localizaciones_dispositivo"
+                    + " WHERE correo IN (SELECT DISTINCT correo FROM public.grupos_dispositivos WHERE correo_administrador='" + correo + "' AND cod_grupo=" + codGrupo + " AND aprobado) AND fecha>=current_Date-90"
+                    + " GROUP BY correo,cod_dispositivo"
+                    + " )"
+                    + " SELECT D.correo, D.cod_dispositivo, D.identificador, D.fecha, LD.cod_localizacion, LD.fecha, LD.latitude, LD.longitud"
+                    + " FROM public.dispositivos D"
+                    + " JOIN grupos_dispositivos GD on (GD.correo=D.correo AND GD.cod_dispositivo=D.cod_dispositivo)"
+                    + " LEFT JOIN tmp_localizaciones TL ON (TL.correo=D.correo AND TL.cod_dispositivo=D.cod_dispositivo)"
+                    + " LEFT JOIN public.localizaciones_dispositivo LD ON (LD.correo=TL.correo AND LD.cod_dispositivo=TL.cod_dispositivo AND LD.cod_localizacion=TL.cod_localizacion)"
+                    + " WHERE GD.cod_grupo=" + codGrupo + " AND GD.correo_administrador='" + correo + "'"
+            );
+            rs = consulta.ejecutar(sql);
+            while (rs.next()) {
+                Dispositivos dispositivos = new Dispositivos(new DispositivosPK(rs.getString("correo"), rs.getInt("cod_dispositivo")), rs.getString("identificador"), rs.getDate("fecha"),
+                        new Usuarios(correo), new LocalizacionesDispositivo(new LocalizacionesDispositivoPK(rs.getString("correo"),
+                                rs.getInt("cod_dispositivo"), rs.getInt("cod_localizacion")), rs.getDate("fecha"), rs.getDouble("latitude"), rs.getDouble("longitud")));
+                dispositivoses.add(dispositivos);
+            }
+            return dispositivoses;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (consulta != null) {
+                consulta.desconectar();
+            }
+        }
+    }
+
 }
