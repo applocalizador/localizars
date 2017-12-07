@@ -33,9 +33,9 @@ import utilidades.modelo.UtilRest;
  */
 @Path("localizador")
 public class LocalizadorResource {
-    
+
     private static final int PRETTY_PRINT_INDENT_FACTOR = 4;
-    
+
     @Context
     private UriInfo context;
 
@@ -64,7 +64,7 @@ public class LocalizadorResource {
                 + "<descripcion>" + "prueba correcta servicio rest" + "</descripcion>"
                 + "</items>"
                 + "</desarrollador>";
-        
+
         JSONObject soapDatainJsonObject = XML.toJSONObject(xml);
         return soapDatainJsonObject.toString(PRETTY_PRINT_INDENT_FACTOR);
     }
@@ -79,11 +79,11 @@ public class LocalizadorResource {
     @GET
     @Path("/get/dispositivos/usuario/{correo}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getUsuario(@PathParam("correo") String correo) throws IOException {
+    public String getDispositivosUsuario(@PathParam("correo") String correo) throws IOException {
         try {
             JSONArray dispositivos = new JSONArray();
             GestorDispositivos gestorDispositivos = new GestorDispositivos();
-            
+
             List<Dispositivos> dispositivosList = gestorDispositivos.cargarDispositivosUsuario(correo);
             for (Dispositivos d : dispositivosList) {
                 dispositivos.put(UtilRest.toJson(d));
@@ -94,8 +94,33 @@ public class LocalizadorResource {
         }
         return null;
     }
-    
-    
+
+    /**
+     * Devuelve la lista de dispositivos del grupo por usuario
+     *
+     * @param correo
+     * @param codGrupo
+     * @return
+     * @throws java.io.IOException
+     */
+    @GET
+    @Path("/get/dispositivos/grupo/usuario/{correo}/{codGrupo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getDispositivosGrupoUsuario(@PathParam("correo") String correo, @PathParam("codGrupo") int codGrupo) throws IOException {
+        try {
+            JSONArray dispositivos = new JSONArray();
+            GestorDispositivos gestorDispositivos = new GestorDispositivos();
+            List<Dispositivos> dispositivoses = gestorDispositivos.cargarDispositivosGrupoUsuario(correo, codGrupo);
+            for (Dispositivos d : dispositivoses) {
+                dispositivos.put(UtilRest.toJson(d));
+            }
+            return dispositivos.toString();
+        } catch (Exception ex) {
+            UtilLog.generarLog(this.getClass(), ex);
+        }
+        return null;
+    }
+
     /**
      * Devuelve la lista de grupos del usuario
      *
@@ -110,7 +135,7 @@ public class LocalizadorResource {
         try {
             JSONArray grupos = new JSONArray();
             GestorGrupos gestorGrupos = new GestorGrupos();
-            
+
             List<Grupos> gruposList = gestorGrupos.consultaGrupos(correo);
             for (Grupos g : gruposList) {
                 grupos.put(UtilRest.toJson(g));
@@ -121,8 +146,6 @@ public class LocalizadorResource {
         }
         return null;
     }
-    
-    
 
     /**
      * PUT method for updating or creating an instance of LocalizadorResource
@@ -133,5 +156,5 @@ public class LocalizadorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
     }
-    
+
 }
