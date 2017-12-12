@@ -78,7 +78,32 @@ public class UtilidadesGeneral {
         return map;
     }
 
-    public static Object obtenerObjetoMapa(final Object objOrigen, final Object objDestino) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException {
+//    public static Object obtenerObjetoMapa(final Object objOrigen, final Object objDestino) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException {
+//        String funClass = objDestino.getClass().getName();
+//        Class c = Class.forName(funClass);
+//        Class[] paramTypes = new Class[1];
+//
+//        for (Field f : objDestino.getClass().getDeclaredFields()) {
+//            if (((LinkedHashMap) objOrigen).get(f.getName()) != null) {
+////                paramTypes[0] = ((LinkedHashMap) objOrigen).get(f.getName()).getClass();
+//                paramTypes[0] = f.getType();
+//                String methodName = "set" + f.getName().substring(0, 1).toUpperCase() + f.getName().substring(1);
+//
+//                Method m = c.getDeclaredMethod(methodName, paramTypes);
+//
+//                if (paramTypes[0].getName().equalsIgnoreCase("java.util.Date")) {
+//                    String fecha = (String) ((LinkedHashMap) objOrigen).get(f.getName());
+//                    m.invoke(objDestino, UtilFecha.fechaDeCadena(fecha, UtilFecha.PATRON_FECHA_YYYYMMDD));
+//                } else {
+//                    m.invoke(objDestino, ((LinkedHashMap) objOrigen).get(f.getName()));
+//                }
+//
+//            }
+//        }
+//        return objDestino;
+//    }
+    
+    public static Object obtenerObjetoMapa(final Object objOrigen, final Object objDestino) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, ParseException, InstantiationException {
         String funClass = objDestino.getClass().getName();
         Class c = Class.forName(funClass);
         Class[] paramTypes = new Class[1];
@@ -93,7 +118,20 @@ public class UtilidadesGeneral {
 
                 if (paramTypes[0].getName().equalsIgnoreCase("java.util.Date")) {
                     String fecha = (String) ((LinkedHashMap) objOrigen).get(f.getName());
-                    m.invoke(objDestino, UtilFecha.fechaDeCadena(fecha, UtilFecha.PATRON_FECHA_YYYYMMDD));
+                    if (fecha != null && !fecha.equalsIgnoreCase("")) {
+                        m.invoke(objDestino, UtilFecha.fechaDeCadena(fecha, UtilFecha.PATRON_FECHA_YYYYMMDD));
+                    }
+                } else if (paramTypes[0].getName().equalsIgnoreCase("Java.lang.Integer")
+                        || paramTypes[0].getName().equalsIgnoreCase("int")) {
+                    String entero = String.valueOf(((LinkedHashMap) objOrigen).get(f.getName()));
+                    if (entero != null && !entero.equalsIgnoreCase("")) {
+                        m.invoke(objDestino, Integer.valueOf(entero));
+                    }
+                } else if (paramTypes[0].getName().contains(".modelo.")) {
+                    Object objDestino2 = Class.forName(f.getType().getName()).getConstructor(new Class[0]).newInstance();
+                    Object objOrigen2 = ((LinkedHashMap) objOrigen).get(f.getName());
+                    objDestino2 = obtenerObjetoMapa(objOrigen2, objDestino2);
+                    m.invoke(objDestino, objDestino2);
                 } else {
                     m.invoke(objDestino, ((LinkedHashMap) objOrigen).get(f.getName()));
                 }

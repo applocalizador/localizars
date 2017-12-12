@@ -12,6 +12,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.PathParam;
@@ -21,10 +22,13 @@ import org.json.JSONObject;
 import org.json.XML;
 import publico.controlador.GestorDispositivos;
 import publico.controlador.GestorGrupos;
+import publico.controlador.GestorLocalizacionesDispositivo;
 import publico.modelo.Dispositivos;
 import publico.modelo.Grupos;
+import publico.modelo.LocalizacionesDispositivo;
 import utilidades.modelo.UtilLog;
 import utilidades.modelo.UtilRest;
+import utilidades.modelo.UtilidadesGeneral;
 
 /**
  * REST Web Service
@@ -155,6 +159,31 @@ public class LocalizadorResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public void putJson(String content) {
+    }
+    
+    /**
+     * Inserta la localización de un dispositivo del usuario.
+     *
+     * @param objLocalizacionesDispositivo     
+     * @throws java.lang.Exception
+     */
+    @POST
+    @Path("/post/localizaciones/dispositivo")
+    @Produces(MediaType.APPLICATION_JSON)   
+    public void getUsuarioAutorizado(Object objLocalizacionesDispositivo) throws Exception {
+         LocalizacionesDispositivo l  = new LocalizacionesDispositivo();
+        try {
+            l = (LocalizacionesDispositivo) UtilidadesGeneral.obtenerObjetoMapa(objLocalizacionesDispositivo, l);
+            GestorLocalizacionesDispositivo gestorLocalizacionesDispositivo = new GestorLocalizacionesDispositivo();
+            
+            gestorLocalizacionesDispositivo.validarAtributosLocalizacionesDispositivo(l);
+            gestorLocalizacionesDispositivo.almacenarLocalizacionesDispositivo(l);
+        } catch (Exception ex) {
+            if (!UtilLog.causaControlada(ex)) {
+                UtilLog.generarLog(LocalizacionesDispositivo.class, ex);
+            }
+            throw ex;
+        }
     }
 
 }
