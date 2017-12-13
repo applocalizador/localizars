@@ -5,7 +5,8 @@ import configuracion.modelo.Usuario;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import utilidades.modelo.UtilFecha;
+import publico.modelo.Dispositivos;
+import publico.modelo.DispositivosPK;
 import utilidades.modelo.UtilLog;
 
 public class UsuarioDAO {
@@ -102,10 +103,11 @@ public class UsuarioDAO {
         try {
             consulta = new Consulta(this.conexion);
             StringBuilder sql = new StringBuilder(
-                    "SELECT correo, cod_documento, documento_usuario, nombre, apellido, clave, activo, fecha_registro"
+                    "SELECT correo, cod_documento, documento_usuario, nombre, apellido, clave, activo, fecha_registro, D.cod_dispositivo, D.identificador, D.fecha, D.serial"
                     + " FROM usuarios"
+                    + " JOIN dispositivos D USING (correo)"
                     + " WHERE (correo='" + usuario.getCorreo().toLowerCase().trim() + "' OR TRIM(REGEXP_REPLACE(correo, '@.*', '', 'g'))::varchar='" + usuario.getCorreo().toLowerCase().trim() + "')"
-                    + " AND clave=md5('" + usuario.getClave().trim() + "')"
+                    + " AND clave=md5('" + usuario.getClave().trim() + "') AND D.identificador like 'MOVIL%'"
             );
             rs = consulta.ejecutar(sql);
             if (rs.next()) {
@@ -114,6 +116,7 @@ public class UsuarioDAO {
                 usuario.setClave(rs.getString("clave"));
                 usuario.setNombre(rs.getString("nombre"));
                 usuario.setApellido(rs.getString("apellido"));
+                usuario.setDispositivos(new Dispositivos(new DispositivosPK(rs.getString("correo"), rs.getInt("cod_dispositivo")), rs.getString("identificador"), rs.getDate("fecha"), rs.getString("serial")));
                 usuario.setSuccess(Boolean.TRUE);
             }
             return usuario;
