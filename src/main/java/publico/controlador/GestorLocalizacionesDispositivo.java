@@ -17,7 +17,7 @@ import utilidades.modelo.UtilLog;
 public class GestorLocalizacionesDispositivo extends Gestor {
 
     public GestorLocalizacionesDispositivo() throws Exception {
-        super();
+        super();    
     }
 
     public void validarAtributosLocalizacionesDispositivo(LocalizacionesDispositivo l) throws Exception {
@@ -26,12 +26,6 @@ public class GestorLocalizacionesDispositivo extends Gestor {
         }
         if (l.getLocalizacionesDispositivoPK().getCodDispositivo() <= 0) {
             throw new Exception("El usuario no tiene un dispositivo asociado", UtilLog.TW_VALIDACION);
-        }
-        if (l.getLatitude() <= 0) {
-            throw new Exception("Indica la latitude", UtilLog.TW_VALIDACION);
-        }
-        if (l.getLongitud()<= 0) {
-            throw new Exception("Indica la longitud", UtilLog.TW_VALIDACION);
         }
     }
 
