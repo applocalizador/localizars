@@ -15,7 +15,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  *
  * @author juliano
  */
-
 public class Dispositivos implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -23,12 +22,20 @@ public class Dispositivos implements Serializable {
     protected DispositivosPK dispositivosPK;
     private String identificador;
     private Date fecha;
+    private String serial;
     private Usuarios usuarios;
     private LocalizacionesDispositivo localizacionesDispositivo;
-    private Collection<LocalizacionesDispositivo> localizacionesDispositivoCollection;    
+    private Collection<LocalizacionesDispositivo> localizacionesDispositivoCollection;
     private Collection<GruposDispositivos> gruposDispositivosCollection;
 
     public Dispositivos() {
+    }
+
+    public Dispositivos(DispositivosPK dispositivosPK, String identificador, Date fecha, String serial) {
+        this.dispositivosPK = dispositivosPK;
+        this.identificador = identificador;
+        this.fecha = fecha;
+        this.serial = serial;
     }
 
     public Dispositivos(DispositivosPK dispositivosPK, String identificador, Date fecha, Usuarios usuarios, LocalizacionesDispositivo localizacionesDispositivo) {
@@ -37,10 +44,8 @@ public class Dispositivos implements Serializable {
         this.fecha = fecha;
         this.usuarios = usuarios;
         this.localizacionesDispositivo = localizacionesDispositivo;
+
     }
-    
-    
-    
 
     public Dispositivos(DispositivosPK dispositivosPK) {
         this.dispositivosPK = dispositivosPK;
@@ -140,5 +145,19 @@ public class Dispositivos implements Serializable {
     public void setLocalizacionesDispositivo(LocalizacionesDispositivo localizacionesDispositivo) {
         this.localizacionesDispositivo = localizacionesDispositivo;
     }
-    
+
+    /**
+     * @return the serial
+     */
+    public String getSerial() {
+        return serial;
+    }
+
+    /**
+     * @param serial the serial to set
+     */
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
+
 }
