@@ -2,6 +2,7 @@ package configuracion.modelo;
 
 import java.util.Date;
 import java.util.List;
+import publico.modelo.Dispositivos;
 
 public class Usuario {
 
@@ -16,7 +17,8 @@ public class Usuario {
     private String claveConfirmacion;
     private Date fechaNacimiento;
     private boolean success = false;
-
+    private Dispositivos dispositivos;
+    
     public Usuario() {
     }
 
@@ -126,5 +128,19 @@ public class Usuario {
      */
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    /**
+     * @return the dispositivos
+     */
+    public Dispositivos getDispositivos() {
+        return dispositivos;
+    }
+
+    /**
+     * @param dispositivos the dispositivos to set
+     */
+    public void setDispositivos(Dispositivos dispositivos) {
+        this.dispositivos = dispositivos;
     }
 }
