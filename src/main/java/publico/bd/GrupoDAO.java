@@ -99,5 +99,42 @@ public class GrupoDAO {
             }
         }
     }
+    
+      public String guardarGrupo(String nombreGrupo, String correo) throws SQLException {
+        Consulta consulta = null;
+        ResultSet rs = null;
+        String respuesta="";
+        try {
+            consulta = new Consulta(this.conexion);
+            
+            StringBuilder sql = new StringBuilder(
+                    "SELECT correo, cod_grupo, nombre " +
+                    "  FROM grupos  WHERE upper(nombre) ='"+nombreGrupo.trim().toUpperCase()+"' and  correo='" +correo.trim()+"'");
+            
+        
+            rs = consulta.ejecutar(sql);
+            if (rs.next()) {
+                
+                respuesta="EXISTE";
+            }else{
+            StringBuilder sql2 = new StringBuilder( "INSERT INTO grupos("
+                    + "correo,  nombre, fecha_creacion)"
+                    + " VALUES ('" + correo + "', '" + nombreGrupo+"',current_timestamp)");
+                
+             consulta.actualizar(sql2);
+              respuesta="OK";
+            
+            }
+            
+            
+            
+        } finally {
+            if (consulta != null) {
+                consulta.desconectar();
+            }
+        }
+        
+       return respuesta;
+    }
 
 }

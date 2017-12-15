@@ -34,6 +34,19 @@ public class GestorGrupos extends Gestor {
             this.cerrarConexion();
         }
     }   
+     
+     
+      public String guardar(String nombreGrupo, String correo) throws Exception {
+        try {
+            this.abrirConexion();
+
+            GrupoDAO grupoDao = new GrupoDAO(conexion);
+            return grupoDao.guardarGrupo(nombreGrupo, correo);
+        } finally {
+            this.cerrarConexion();
+        }
+
+    }
       
     
 }

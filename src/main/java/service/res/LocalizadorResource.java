@@ -185,5 +185,29 @@ public class LocalizadorResource {
             throw ex;
         }
     }
+    
+    
+           /**
+     * Guarda el grupo 
+     *
+     * @param correo
+     * @return
+     * @throws java.io.IOException
+     */
+    @POST
+    @Path("/post/grupos/guardar/{nombreGrupo}/{correo}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String guardarGrupos(@PathParam("nombreGrupo") String nombreGrupo,@PathParam("correo") String correo) throws IOException {
+        try {
+           GestorGrupos gestorGrupos = new GestorGrupos();
+         
+            return gestorGrupos.guardar(nombreGrupo,correo); 
+        } catch (Exception ex) {
+            UtilLog.generarLog(this.getClass(), ex);
+        }
+        return null;
+    }
+    
+    
 
 }
