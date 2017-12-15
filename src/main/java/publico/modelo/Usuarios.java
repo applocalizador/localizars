@@ -29,6 +29,8 @@ public class Usuarios implements Serializable {
     private Date fechaRegistro;
     private Collection<Dispositivos> dispositivosCollection;
     private Collection<Grupos> gruposCollection;
+    private Dispositivos dispositivos;
+    private Boolean success = false;
 
     public Usuarios() {
     }
@@ -144,6 +146,34 @@ public class Usuarios implements Serializable {
     @Override
     public String toString() {
         return "publico.modelo.Usuarios[ correo=" + correo + " ]";
+    }
+
+    /**
+     * @return the dispositivos
+     */
+    public Dispositivos getDispositivos() {
+        return dispositivos;
+    }
+
+    /**
+     * @param dispositivos the dispositivos to set
+     */
+    public void setDispositivos(Dispositivos dispositivos) {
+        this.dispositivos = dispositivos;
+    }
+
+    /**
+     * @return the success
+     */
+    public Boolean getSuccess() {
+        return success;
+    }
+
+    /**
+     * @param success the success to set
+     */
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
     
 }

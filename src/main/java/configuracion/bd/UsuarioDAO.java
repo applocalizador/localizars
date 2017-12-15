@@ -7,7 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import publico.modelo.Dispositivos;
 import publico.modelo.DispositivosPK;
+import publico.modelo.Usuarios;
 import utilidades.modelo.UtilLog;
+import utilidades.modelo.UtilTexto;
 
 public class UsuarioDAO {
 
@@ -51,7 +53,7 @@ public class UsuarioDAO {
         }
     }
 
-    public boolean existeUsuario(Usuario usuario) throws SQLException {
+    public boolean existeUsuario(Usuarios usuario) throws SQLException {
         ResultSet rs = null;
         Consulta consulta = null;
         boolean existe = false;
@@ -97,7 +99,7 @@ public class UsuarioDAO {
         }
     }
 
-    public Usuario cargarUsuario(Usuario usuario) throws SQLException {
+    public Usuarios cargarUsuario(Usuarios usuario) throws SQLException {
         ResultSet rs = null;
         Consulta consulta = null;
         try {
@@ -111,7 +113,7 @@ public class UsuarioDAO {
             );
             rs = consulta.ejecutar(sql);
             if (rs.next()) {
-                usuario.setCodigo(rs.getString("documento_usuario"));
+                usuario.setDocumentoUsuario(rs.getString("documento_usuario"));
                 usuario.setCorreo(rs.getString("correo"));
                 usuario.setClave(rs.getString("clave"));
                 usuario.setNombre(rs.getString("nombre"));
@@ -173,6 +175,28 @@ public class UsuarioDAO {
             if (rs != null) {
                 rs.close();
             }
+            if (consulta != null) {
+                consulta.desconectar();
+            }
+        }
+    }
+
+    public void insertarUsuario(Usuarios u) throws SQLException {
+
+        Consulta consulta = null;
+        try {
+            consulta = new Consulta(this.conexion);
+            StringBuilder sql = new StringBuilder(
+                    "INSERT INTO public.usuarios("
+                    + " correo, cod_documento, documento_usuario, nombre, apellido, clave,"
+                    + " activo, fecha_registro)"
+                    + " VALUES ('" + u.getCorreo() + "', " + u.getCodDocumento() + ", " + UtilTexto.cadenaDefecto(u.getDocumentoUsuario(), UtilTexto.CARACTER_COMILLA)
+                    + " ," + UtilTexto.cadenaDefecto(u.getNombre(), UtilTexto.CARACTER_COMILLA) + ", " + UtilTexto.cadenaDefecto(u.getApellido(), UtilTexto.CARACTER_COMILLA)
+                    + " , md5('" + u.getClave() + "'), " + Boolean.TRUE + ","
+                    + " DEFAULT);"
+            );
+            consulta.actualizar(sql);
+        } finally {
             if (consulta != null) {
                 consulta.desconectar();
             }

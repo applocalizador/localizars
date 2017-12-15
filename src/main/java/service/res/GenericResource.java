@@ -33,6 +33,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
+import publico.modelo.Usuarios;
 import sun.misc.BASE64Encoder;
 import utilidades.modelo.UtilLog;
 import utilidades.modelo.UtilRest;
@@ -179,10 +180,10 @@ public class GenericResource {
     @POST
     @Path("/post/validarUsuario")
     @Produces(MediaType.APPLICATION_JSON)
-    public Usuario getUsuarioAutorizado(Object objUsuario) throws Exception {
-        Usuario usuario = new Usuario();
+    public Usuarios getUsuarioAutorizado(Object objUsuario) throws Exception {
+        Usuarios usuario = new Usuarios();
         try {
-            usuario = (Usuario) UtilidadesGeneral.obtenerObjetoMapa(objUsuario, usuario);
+            usuario = (Usuarios) UtilidadesGeneral.obtenerObjetoMapa(objUsuario, usuario);
             GestorUsuario gestorUsuario = new GestorUsuario();
             gestorUsuario.validarAtributosIngreso(usuario);
             usuario = gestorUsuario.validarUsuario(usuario);
@@ -269,6 +270,38 @@ public class GenericResource {
             gestorUsuario.validarAtributos(usuario, verificarClave);
             usuario = gestorUsuario.upperAtributos(usuario);
             gestorUsuario.actualizarUsuario(usuario, verificarClave);
+        } catch (Exception ex) {
+            if (!UtilLog.causaControlada(ex)) {
+                UtilLog.generarLog(Usuario.class, ex);
+            }
+            throw ex;
+        }
+    }
+    
+    /**
+     * Crea un nuevo usuario.
+     *
+     * @param objUsuario
+     * @return 
+     * @throws java.lang.Exception
+     *
+     */
+    @POST
+    @Path("/post/registrar/usuario")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Usuarios registrarUsuario(Object objUsuario) throws Exception {
+        Usuarios usuarios = new Usuarios();
+        
+        GestorCupon gestorCupon = new GestorCupon();
+        JSONArray cuponesUsuario = new JSONArray();
+        List<Cupon> listaCuponesUsuario;
+        try {
+            usuarios = (Usuarios) UtilidadesGeneral.obtenerObjetoMapa(objUsuario, usuarios);
+            GestorUsuario gestorUsuario = new GestorUsuario();
+            gestorUsuario.validarAtributos(usuarios, Usuario.VERIFICAR_CLAVE);
+//            usuario = gestorUsuario.upperAtributos(usuario);
+            gestorUsuario.almacenarUsuario(usuarios);
+            return usuarios;
         } catch (Exception ex) {
             if (!UtilLog.causaControlada(ex)) {
                 UtilLog.generarLog(Usuario.class, ex);

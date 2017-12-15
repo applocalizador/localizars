@@ -17,7 +17,6 @@ public class Usuario {
     private String claveConfirmacion;
     private Date fechaNacimiento;
     private boolean success = false;
-    private Dispositivos dispositivos;
     
     public Usuario() {
     }
@@ -130,17 +129,4 @@ public class Usuario {
         this.success = success;
     }
 
-    /**
-     * @return the dispositivos
-     */
-    public Dispositivos getDispositivos() {
-        return dispositivos;
-    }
-
-    /**
-     * @param dispositivos the dispositivos to set
-     */
-    public void setDispositivos(Dispositivos dispositivos) {
-        this.dispositivos = dispositivos;
-    }
 }

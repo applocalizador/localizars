@@ -11,14 +11,16 @@ import java.io.Serializable;
  *
  * @author juliano
  */
-
 public class DispositivosPK implements Serializable {
 
-    
     private String correo;
     private int codDispositivo;
 
     public DispositivosPK() {
+    }
+
+    public DispositivosPK(String correo) {
+        this.correo = correo;
     }
 
     public DispositivosPK(String correo, int codDispositivo) {
@@ -70,5 +72,5 @@ public class DispositivosPK implements Serializable {
     public String toString() {
         return "publico.modelo.DispositivosPK[ correo=" + correo + ", codDispositivo=" + codDispositivo + " ]";
     }
-    
+
 }

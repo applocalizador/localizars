@@ -132,4 +132,28 @@ public class DispositivosDAO {
         }
     }
 
+    public Dispositivos insertarDispositivos(Dispositivos d) throws SQLException {
+        ResultSet rs = null;
+        Consulta consulta = null;
+        try {
+            consulta = new Consulta(this.conexion);
+            StringBuilder sql = new StringBuilder(
+                    "INSERT INTO public.dispositivos("
+                    + " correo, cod_dispositivo, identificador, fecha, serial)"
+                    + " VALUES ('" + d.getDispositivosPK().getCorreo() + "', DEFAULT, '" + d.getIdentificador() + "', NOW(), '" + d.getSerial() + "') RETURNING cod_dispositivo;"
+            );
+            rs = consulta.ejecutar(sql);
+            rs.next();
+            d.getDispositivosPK().setCodDispositivo(rs.getInt("cod_dispositivo"));
+            return d;
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (consulta != null) {
+                consulta.desconectar();
+            }
+        }
+    }
+
 }

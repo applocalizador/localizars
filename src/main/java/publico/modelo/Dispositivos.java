@@ -31,6 +31,12 @@ public class Dispositivos implements Serializable {
     public Dispositivos() {
     }
 
+    public Dispositivos(DispositivosPK dispositivosPK, String identificador, String serial) {
+        this.dispositivosPK = dispositivosPK;
+        this.identificador = identificador;
+        this.serial = serial;
+    }
+
     public Dispositivos(DispositivosPK dispositivosPK, String identificador, Date fecha, String serial) {
         this.dispositivosPK = dispositivosPK;
         this.identificador = identificador;

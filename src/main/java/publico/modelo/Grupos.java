@@ -36,6 +36,13 @@ public class Grupos implements Serializable {
         this.gruposPK = new GruposPK(correo, codGrupo);
     }
 
+    public Grupos(GruposPK gruposPK, String nombre) {
+        this.gruposPK = gruposPK;
+        this.nombre = nombre;
+    }
+    
+    
+
     public GruposPK getGruposPK() {
         return gruposPK;
     }
