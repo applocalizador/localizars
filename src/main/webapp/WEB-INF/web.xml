@@ -8,14 +8,14 @@
     <!--active el filtro solo para depurar localmente 
     y deshabilitar el proxy en el ripple... malparidos trabajen...-->
     
-    <filter>
+<!--    <filter>
         <filter-name>CorsFilter</filter-name>
         <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>
-    </filter-mapping>
+    </filter-mapping>-->
     
     <servlet>
         <servlet-name>ServletAdaptor</servlet-name>
