@@ -6,7 +6,7 @@
     <packaging>war</packaging>
     <version>1.0</version>
     <name>localizars</name>
-<!--    <repositories>
+    <!--    <repositories>
         <repository>
             <id>eap</id>
             <url>http://maven.repository.redhat.com/techpreview/all</url>
@@ -23,7 +23,7 @@
             <url>file:${project.basedir}/lib</url>
         </repository>
     </repositories>-->
-<!--    <pluginRepositories>
+    <!--    <pluginRepositories>
         <pluginRepository>
             <id>eap</id>
             <url>http://maven.repository.redhat.com/techpreview/all</url>
@@ -35,11 +35,11 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>-->
-<!--    <properties>
+    <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-    </properties>-->
+    </properties>
     <dependencies>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -99,7 +99,7 @@
             <version>1.8.5</version>
         </dependency>
         
-<!--        <dependency>
+        <!--        <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>1.7.1</version>
@@ -146,7 +146,7 @@
         </plugins>
     </build>
     
-<!--    <profiles>
+    <!--    <profiles>
         <profile>
              When built in OpenShift the 'openshift' profile will be used when 
             invoking mvn. 
