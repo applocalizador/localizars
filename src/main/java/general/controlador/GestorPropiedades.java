@@ -16,11 +16,12 @@ public class GestorPropiedades {
         Properties p = new Properties();
         try {
 //            p.setProperty("urlbd", "jdbc:postgresql://127.0.0.1:5432/localizador");
-            p.setProperty("urlbd", "jdbc:postgresql://10.1.1.141:5432/localizador");
+//            p.setProperty("urlbd", "jdbc:postgresql://10.1.1.141:5432/localizador");
+            p.setProperty("urlbd", "jdbc:postgresql://postgresql.localizars.svc:5432/localizador");
 //            p.setProperty("urlbd", "jdbc:postgresql://54dc96645973ca7c56000153-oxes.rhcloud.com:51801/cuponrs");
             p.setProperty("controlador", "org.postgresql.Driver");
-            p.setProperty("usuario", "adminvqltilx");
-            p.setProperty("clave", "2cbRV4EurrpR");
+            p.setProperty("usuario", "userSCW");
+            p.setProperty("clave", "AoC5WDCAFiCXqGeT");
             
         } catch (Exception e) {
             throw e;
