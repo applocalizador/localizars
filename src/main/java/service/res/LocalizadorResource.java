@@ -194,9 +194,9 @@ public class LocalizadorResource {
      * @return
      * @throws java.io.IOException
      */
-    @POST
-    @Path("/post/grupos/guardar/{nombreGrupo}/{correo}")
-    @Produces(MediaType.APPLICATION_JSON)
+    @GET
+    @Path("/get/grupos/guardar/{nombreGrupo}/{correo}")
+    @Produces(MediaType.TEXT_PLAIN)
     public String guardarGrupos(@PathParam("nombreGrupo") String nombreGrupo,@PathParam("correo") String correo) throws IOException {
         try {
            GestorGrupos gestorGrupos = new GestorGrupos();
