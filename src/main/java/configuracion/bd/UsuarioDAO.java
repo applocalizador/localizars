@@ -132,21 +132,16 @@ public class UsuarioDAO {
         }
     }
 
-    public Usuario actualizarUsuario(Usuario usuario) throws SQLException {
+    public void actualizarUsuario(Usuario usuario) throws SQLException {
         Consulta consulta = null;
-        ResultSet rs = null;
         try {
             consulta = new Consulta(this.conexion);
             StringBuilder sql = new StringBuilder(
-                    "UPDATE usuario"
-                    + " SET  nombre='" + usuario.getNombre() + " " + usuario.getApellido() + "'"
-                    + " WHERE email='" + usuario.getCorreo() + "' RETURNING cod_usuario"
+                    "UPDATE usuarios"
+                    + " SET  nombre='" + usuario.getNombre() + "', apellido= '" + usuario.getApellido() + "'"
+                    + " WHERE correo='" + usuario.getCorreo() + "'"
             );
-            rs = consulta.ejecutar(sql);
-            if (rs.next()) {
-                usuario.setCodigo(rs.getString("cod_usuario"));
-            }
-            return usuario;
+            consulta.actualizar(sql);
         } finally {
             if (consulta != null) {
                 consulta.desconectar();

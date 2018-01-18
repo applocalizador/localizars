@@ -30,23 +30,23 @@ public class GestorUsuario extends Gestor {
         }
     }
 
-    public Usuario almacenarUsuario(Usuario usuario) throws Exception {
-        try {
-            this.abrirConexion();
-            UsuarioDAO usuarioDAO = new UsuarioDAO(conexion);
-
-//            if (usuarioDAO.existeUsuario(usuario)) {
-//                throw new Exception("El correo ingresado ya se encuentra registrado.", UtilLog.TW_VALIDACION);
+//    public Usuario almacenarUsuario(Usuario usuario) throws Exception {
+//        try {
+//            this.abrirConexion();
+//            UsuarioDAO usuarioDAO = new UsuarioDAO(conexion);
+//
+////            if (usuarioDAO.existeUsuario(usuario)) {
+////                throw new Exception("El correo ingresado ya se encuentra registrado.", UtilLog.TW_VALIDACION);
+////            }
+//            usuario = usuarioDAO.actualizarUsuario(usuario);
+//            if (usuario.getCodigo() == null || usuario.getCodigo().equalsIgnoreCase("0")) {
+//                usuario = usuarioDAO.insertarUsuario(usuario);
 //            }
-            usuario = usuarioDAO.actualizarUsuario(usuario);
-            if (usuario.getCodigo() == null || usuario.getCodigo().equalsIgnoreCase("0")) {
-                usuario = usuarioDAO.insertarUsuario(usuario);
-            }
-            return usuario;
-        } finally {
-            this.cerrarConexion();
-        }
-    }
+//            return usuario;
+//        } finally {
+//            this.cerrarConexion();
+//        }
+//    }
 
     public void validarAtributos(Usuario usuario, boolean validaClave) throws Exception {
         if (!UtilCorreo.validarCorreo(usuario.getCorreo())) {
@@ -102,21 +102,22 @@ public class GestorUsuario extends Gestor {
         }
     }
 
-    public void actualizarUsuario(Usuario usuario, boolean actualizaClave) throws Exception {
+    public void actualizarUsuario(Usuario usuario) throws Exception {
         try {
             this.abrirConexion();
-            this.inicioTransaccion();
-            UsuarioDAO usuarioDAO = new UsuarioDAO(conexion);
-//            usuarioDAO.actualizarUsuario(usuario, actualizaClave);
-            this.finTransaccion();
+            new UsuarioDAO(conexion).actualizarUsuario(usuario);
         } finally {
             this.cerrarConexion();
         }
     }
 
     public Usuario upperAtributos(Usuario usuario) {
-        usuario.setNombre(usuario.getNombre().toUpperCase());
-        usuario.setApellido(usuario.getApellido().toUpperCase());
+        if (usuario.getNombre() != null) {
+            usuario.setNombre(usuario.getNombre().toUpperCase());
+        }
+        if (usuario.getApellido() != null) {
+            usuario.setApellido(usuario.getApellido().toUpperCase());
+        }
         return usuario;
     }
 
@@ -167,7 +168,6 @@ public class GestorUsuario extends Gestor {
             GrupoDAO grupoDAO = new GrupoDAO(conexion);
             DispositivosDAO dispositivosDAO = new DispositivosDAO(conexion);
 
-            
             usuarioDAO.insertarUsuario(usuarios);
 
             Grupos g = new Grupos(new GruposPK(usuarios.getCorreo()), "MIS DISPOSITIVOS");
@@ -178,13 +178,19 @@ public class GestorUsuario extends Gestor {
             GruposDispositivos gd = new GruposDispositivos(g.getGruposPK().getCorreo(), g.getGruposPK().getCodGrupo(), d.getDispositivosPK().getCorreo(), d.getDispositivosPK().getCodDispositivo());
             gd.setAprobado(Boolean.TRUE);
             grupoDAO.insertarGruposDispositivos(gd);
-            
+
             this.finTransaccion();
         } catch (Exception e) {
             this.devolverTransaccion();
             throw e;
         } finally {
             this.cerrarConexion();
+        }
+    }
+
+    public void validarAtributos(Usuario usuario) throws Exception {
+        if (usuario.getCorreo() == null || usuario.getCorreo().equalsIgnoreCase("")) {
+            throw new Exception("Correo del usuario no definido.", UtilLog.TW_VALIDACION);
         }
     }
 }

@@ -68,7 +68,8 @@ public class GenericResource {
     @Produces("application/json")
     public String getJson() {
         //TODO return proper representation object
-        String xml = //"<?xml version='1.0' encoding='UTF-8' ?>"
+        String xml
+                = //"<?xml version='1.0' encoding='UTF-8' ?>"
                 "<desarrollador>"
                 + "<items>"
                 + "<id>" + "1" + "</id>"
@@ -196,59 +197,42 @@ public class GenericResource {
         }
     }
 
-    /**
-     * Crea un nuevo usuario.
-     *
-     * @param objUsuario
-     * @throws java.lang.Exception
-     *
-     */
-    @POST
-    @Path("/post/usuario")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String postUsuario(Object objUsuario) throws Exception {
-        Usuario usuario = new Usuario();
-        GestorCupon gestorCupon = new GestorCupon();
-        JSONArray cuponesUsuario = new JSONArray();
-        List<Cupon> listaCuponesUsuario;
-        try {
-            usuario = (Usuario) UtilidadesGeneral.obtenerObjetoMapa(objUsuario, usuario);
-            GestorUsuario gestorUsuario = new GestorUsuario();
-//            gestorUsuario.validarAtributos(usuario, Usuario.VERIFICAR_CLAVE);
-            usuario = gestorUsuario.upperAtributos(usuario);
-            gestorUsuario.almacenarUsuario(usuario);
-            listaCuponesUsuario = gestorCupon.cargarCuponesUsuario(usuario);
-            for (Cupon c : listaCuponesUsuario) {
-                c.setImagenBase64(new BASE64Encoder().encode(c.getImagen()));
-                c.setImagen(null);
-                cuponesUsuario.put(UtilRest.toJson(c));
-            }
-            return cuponesUsuario.toString();
-        } catch (Exception ex) {
-            if (!UtilLog.causaControlada(ex)) {
-                UtilLog.generarLog(Usuario.class, ex);
-            }
-            throw ex;
-        }
-    }
-
 //    /**
-//     * PUT method for updating or creating an instance of GenericResource
+//     * Crea un nuevo usuario.
 //     *
-//     * @param content representation for the resource
+//     * @param objUsuario
+//     * @throws java.lang.Exception
+//     *
 //     */
-//    @PUT
-//    @Path("/put/usuario/{content}")
-//    @Consumes("application/json")
-//    public void putJson(String content) {
-//        System.out.println("hola " + content);
-//        content = content.replace("%5B", "'");
-//        content = content.replace("%5D", "'");
-//        content = content.replace("&", ",");
-//        System.out.println("hola " + content);
-//        JSONObject soapDatainJsonObject = (JSONObject) JSONObject.stringToValue(content);
-//        System.out.println(soapDatainJsonObject.toString(PRETTY_PRINT_INDENT_FACTOR));
+//    @POST
+//    @Path("/post/usuario")
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    public String postUsuario(Object objUsuario) throws Exception {
+//        Usuario usuario = new Usuario();
+//        GestorCupon gestorCupon = new GestorCupon();
+//        JSONArray cuponesUsuario = new JSONArray();
+//        List<Cupon> listaCuponesUsuario;
+//        try {
+//            usuario = (Usuario) UtilidadesGeneral.obtenerObjetoMapa(objUsuario, usuario);
+//            GestorUsuario gestorUsuario = new GestorUsuario();
+////            gestorUsuario.validarAtributos(usuario, Usuario.VERIFICAR_CLAVE);
+//            usuario = gestorUsuario.upperAtributos(usuario);
+//            gestorUsuario.almacenarUsuario(usuario);
+//            listaCuponesUsuario = gestorCupon.cargarCuponesUsuario(usuario);
+//            for (Cupon c : listaCuponesUsuario) {
+//                c.setImagenBase64(new BASE64Encoder().encode(c.getImagen()));
+//                c.setImagen(null);
+//                cuponesUsuario.put(UtilRest.toJson(c));
+//            }
+//            return cuponesUsuario.toString();
+//        } catch (Exception ex) {
+//            if (!UtilLog.causaControlada(ex)) {
+//                UtilLog.generarLog(Usuario.class, ex);
+//            }
+//            throw ex;
+//        }
 //    }
+
     /**
      * Actualiza parcialmente los datos de un usuario.
      *
@@ -264,12 +248,9 @@ public class GenericResource {
         try {
             usuario = (Usuario) UtilidadesGeneral.obtenerObjetoMapa(objUsuario, usuario);
             GestorUsuario gestorUsuario = new GestorUsuario();
-            boolean verificarClave = (usuario.getClave() == null || !usuario.getClave().equalsIgnoreCase(""))
-                    || (usuario.getClaveConfirmacion() == null || !usuario.getClaveConfirmacion().equalsIgnoreCase(""));
-
-            gestorUsuario.validarAtributos(usuario, verificarClave);
+            gestorUsuario.validarAtributos(usuario);
             usuario = gestorUsuario.upperAtributos(usuario);
-            gestorUsuario.actualizarUsuario(usuario, verificarClave);
+            gestorUsuario.actualizarUsuario(usuario);
         } catch (Exception ex) {
             if (!UtilLog.causaControlada(ex)) {
                 UtilLog.generarLog(Usuario.class, ex);
@@ -277,12 +258,12 @@ public class GenericResource {
             throw ex;
         }
     }
-    
+
     /**
      * Crea un nuevo usuario.
      *
      * @param objUsuario
-     * @return 
+     * @return
      * @throws java.lang.Exception
      *
      */
@@ -291,10 +272,7 @@ public class GenericResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Usuarios registrarUsuario(Object objUsuario) throws Exception {
         Usuarios usuarios = new Usuarios();
-        
-        GestorCupon gestorCupon = new GestorCupon();
-        JSONArray cuponesUsuario = new JSONArray();
-        List<Cupon> listaCuponesUsuario;
+
         try {
             usuarios = (Usuarios) UtilidadesGeneral.obtenerObjetoMapa(objUsuario, usuarios);
             GestorUsuario gestorUsuario = new GestorUsuario();
@@ -309,5 +287,5 @@ public class GenericResource {
             throw ex;
         }
     }
-    
+
 }
