@@ -6,6 +6,7 @@
 package service.res;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -26,6 +27,7 @@ import publico.controlador.GestorLocalizacionesDispositivo;
 import publico.modelo.Dispositivos;
 import publico.modelo.Grupos;
 import publico.modelo.LocalizacionesDispositivo;
+import publico.modelo.LocalizacionesDispositivoPK;
 import utilidades.modelo.UtilLog;
 import utilidades.modelo.UtilRest;
 import utilidades.modelo.UtilidadesGeneral;
@@ -175,6 +177,33 @@ public class LocalizadorResource {
         try {
             l = (LocalizacionesDispositivo) UtilidadesGeneral.obtenerObjetoMapa(objLocalizacionesDispositivo, l);
             GestorLocalizacionesDispositivo gestorLocalizacionesDispositivo = new GestorLocalizacionesDispositivo();
+            
+            gestorLocalizacionesDispositivo.validarAtributosLocalizacionesDispositivo(l);
+            gestorLocalizacionesDispositivo.almacenarLocalizacionesDispositivo(l);
+        } catch (Exception ex) {
+            if (!UtilLog.causaControlada(ex)) {
+                UtilLog.generarLog(LocalizacionesDispositivo.class, ex);
+            }
+            throw ex;
+        }
+    }
+    
+    /**
+     * Inserta la localización de un dispositivo del usuario.
+     *
+     * @param objLocalizacionesDispositivo     
+     * @throws java.lang.Exception
+     */
+    @GET
+    @Path("/localizaciones/{latitud}/{longitud}")
+    @Produces(MediaType.APPLICATION_JSON)   
+    public void localizacionesGeneric(@PathParam("latitud") Double latitud,@PathParam("longitud") Double longitud ) throws Exception {
+        try {
+            GestorLocalizacionesDispositivo gestorLocalizacionesDispositivo = new GestorLocalizacionesDispositivo();
+            
+            LocalizacionesDispositivo l = new LocalizacionesDispositivo(new LocalizacionesDispositivoPK("pepito.perez@domain.com", 1, 0), 
+                    new Date(), latitud, longitud);
+            
             
             gestorLocalizacionesDispositivo.validarAtributosLocalizacionesDispositivo(l);
             gestorLocalizacionesDispositivo.almacenarLocalizacionesDispositivo(l);
